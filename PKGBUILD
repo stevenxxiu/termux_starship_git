@@ -68,9 +68,11 @@ build() {
   docker cp "${startdir}/build.sh" "${container_name}:/tmp/starship/"
   mkdir --parents --mode 777 target/
   docker container exec $container_name sh /tmp/starship/build.sh
-  docker container stop $container_name
 
-  sudo chown $USER target/aarch64-linux-android/release/starship
+  # `root` user in the *Docker* container maps to the user running *Docker*
+  docker container exec $container_name sudo chown root:root /tmp/starship/target/aarch64-linux-android/release/starship
+
+  docker container stop $container_name
 }
 
 package() {
