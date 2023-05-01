@@ -1,0 +1,33 @@
+From a650230cee9a9da44796b2f1cdd482fee448141d Mon Sep 17 00:00:00 2001
+From: "Michael K. Werle" <mkw-github@coruscations.com>
+Date: Thu, 6 Apr 2023 19:06:26 -0500
+Subject: [PATCH] fix(directory): contract git home dirs with symbol (#4024)
+
+Home dirs stored in git repos resulted in inconsistent path contraciton
+when the homedir symbol substitution was done. This resulted in output
+similar to ` ~/.configsteven/.config` instead of just `~/.config` when
+`$before_root_path` was used.
+---
+ src/modules/directory.rs | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
+
+diff --git a/src/modules/directory.rs b/src/modules/directory.rs
+index 916e41c70bd8..c21940c8a8de 100644
+--- a/src/modules/directory.rs
++++ b/src/modules/directory.rs
+@@ -106,7 +106,14 @@ pub fn module<'a>(context: &'a Context) -> Option<Module<'a>> {
+ 
+     let path_vec = match &repo.and_then(|r| r.workdir.as_ref()) {
+         Some(repo_root) if config.repo_root_style.is_some() => {
+-            let contracted_path = contract_repo_path(display_dir, repo_root)?;
++            // Handle the home directory by doing symbol substitution in both
++            // the display directory and the repo root.
++            let full_path = contract_path(display_dir, &home_dir, &home_symbol);
++            let top_level_path = contract_path(repo_root, &home_dir, &home_symbol);
++            let contracted_path = contract_repo_path(
++                Path::new(full_path.as_ref()),
++                Path::new(top_level_path.as_ref()),
++            )?;
+             let repo_path_vec: Vec<&str> = contracted_path.split('/').collect();
+             let after_repo_root = contracted_path.replacen(repo_path_vec[0], "", 1);
+             let num_segments_after_root = after_repo_root.split('/').count();
