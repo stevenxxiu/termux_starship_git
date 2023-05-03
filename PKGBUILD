@@ -44,7 +44,7 @@ build() {
   cd $_pkgname
 
   container_name=starship_termux_container
-  image_name=starship_termux_image
+  image_name=termux_image
 
   export DOCKER_HOST="unix://${XDG_RUNTIME_DIR}/docker.sock"
 
