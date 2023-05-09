@@ -65,7 +65,6 @@ build() {
     $image_name
 
   docker cp "${startdir}/config.toml" "${container_name}:/home/build/.cargo/"
-  docker cp "${startdir}/build.sh" "${container_name}:/tmp/starship/"
   mkdir --parents --mode 777 target/
   docker container exec $container_name sh /tmp/starship/build.sh
 
