@@ -37,7 +37,7 @@ prepare() {
   chmod 644 "${HOME}/.cargo/registry/src/github.com-"*"/pin-utils-0.1.0/src/"*
 
   # Patches
-  patch --forward --strip=1 --input="${startdir}/5071.patch"
+  patch --forward --strip 1 --input "${startdir}/5071.patch"
 }
 
 build() {
