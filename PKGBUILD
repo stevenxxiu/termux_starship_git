@@ -16,7 +16,7 @@ sha256sums=('SKIP')
 prefix='/data/data/com.termux/files/usr'
 
 pkgver() {
-  cd $_pkgname
+  cd "$_pkgname"
 
   version_fmt=""
   version_fmt+="$(grep '^version =' Cargo.toml | head -n1 | cut -d\" -f2)"
@@ -26,7 +26,7 @@ pkgver() {
 }
 
 prepare() {
-  cd $_pkgname
+  cd "$_pkgname"
 
   # Fetch *Rust* packages on host, to avoid write permission issues with `~/.cargo/`
   cargo fetch \
@@ -41,7 +41,7 @@ prepare() {
 }
 
 build() {
-  cd $_pkgname
+  cd "$_pkgname"
 
   container_name=starship_termux_container
   image_name=termux_image
@@ -75,7 +75,7 @@ build() {
 }
 
 package() {
-  cd $_pkgname
+  cd "$_pkgname"
 
   install -Dm700 target/aarch64-linux-android/release/starship "${pkgdir}/${prefix}/bin/${_pkgname}"
   install -Dm600 LICENSE "${pkgdir}/${prefix}/share/doc/starship/LICENSE"
