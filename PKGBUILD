@@ -50,7 +50,6 @@ build() {
 
 package() {
   cd "$_pkgname"
-
-  install -Dm700 target/aarch64-linux-android/release/starship "${pkgdir}${TERMUX_PREFIX}/bin/${_pkgname}"
-  install -Dm600 LICENSE "${pkgdir}${TERMUX_PREFIX}/share/doc/starship/LICENSE"
+  install -Dm700 -t "${pkgdir}${TERMUX_PREFIX}/bin" target/aarch64-linux-android/release/starship
+  install -Dm600 -t "${pkgdir}${TERMUX_PREFIX}/share/doc/${_pkgname}" LICENSE
 }
