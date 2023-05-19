@@ -1,6 +1,6 @@
 pkgname=starship-git
 _pkgname=starship
-pkgver=1.14.2.2742.ga9dd30b9e
+pkgver=1.14.2.2745.g6f63e4c44
 pkgrel=1
 pkgdesc="The cross-shell prompt for astronauts"
 arch=('aarch64')
