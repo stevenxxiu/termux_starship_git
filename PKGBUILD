@@ -41,7 +41,6 @@ build() {
 
   cargo build \
     --target aarch64-linux-android \
-    --config target.aarch64-linux-android.linker=\'aarch64-linux-android33-clang\' \
     --locked \
     --release \
     --no-default-features \
