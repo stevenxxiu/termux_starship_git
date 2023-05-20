@@ -1,0 +1,29 @@
+From 72fb91b3459edbb1790d20cb93f233a6390a536f Mon Sep 17 00:00:00 2001
+From: Steven Xu <stevenxxiu@gmail.com>
+Date: Sat, 20 May 2023 17:56:07 +1000
+Subject: [PATCH] fix(directory): ignore *Git* repos that are parents of the
+ home directory
+
+---
+ src/modules/directory.rs | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/src/modules/directory.rs b/src/modules/directory.rs
+index c21940c8..4efd50ef 100644
+--- a/src/modules/directory.rs
++++ b/src/modules/directory.rs
+@@ -105,7 +105,10 @@ pub fn module<'a>(context: &'a Context) -> Option<Module<'a>> {
+     };
+ 
+     let path_vec = match &repo.and_then(|r| r.workdir.as_ref()) {
+-        Some(repo_root) if config.repo_root_style.is_some() => {
++        Some(repo_root)
++            if config.repo_root_style.is_some()
++                && (**repo_root == home_dir || !home_dir.starts_with(repo_root)) =>
++        {
+             // Handle the home directory by doing symbol substitution in both
+             // the display directory and the repo root.
+             let full_path = contract_path(display_dir, &home_dir, &home_symbol);
+-- 
+2.40.1
+
