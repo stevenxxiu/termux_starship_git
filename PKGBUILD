@@ -30,8 +30,8 @@ prepare() {
   cargo fetch --target aarch64-linux-android --locked
 
   # Patches
-  patch --forward --strip=1 --input="${startdir}/5071.patch"
-  patch --forward --strip=1 --input="${startdir}/0001-fix-directory-ignore-Git-repos-that-are-parents-of-t.patch"
+  patch --forward --strip 1 --input "${startdir}/5071.patch"
+  patch --forward --strip 1 --input "${startdir}/0001-fix-directory-ignore-Git-repos-that-are-parents-of-t.patch"
 }
 
 build() {
