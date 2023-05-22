@@ -27,11 +27,12 @@ prepare() {
   cd "$_pkgname"
 
   rustup target add aarch64-linux-android
-  cargo fetch --target aarch64-linux-android --locked
+  cargo fetch --target aarch64-linux-android
 
   # Patches
   patch --forward --strip 1 --input "${startdir}/5071.patch"
   patch --forward --strip 1 --input "${startdir}/0001-fix-directory-ignore-Git-repos-that-are-parents-of-t.patch"
+  patch --forward --strip 1 --input "${startdir}/cargo-chrono-978.diff"
 }
 
 build() {
@@ -42,7 +43,6 @@ build() {
 
   cargo build \
     --target aarch64-linux-android \
-    --locked \
     --release \
     --no-default-features \
     --features notify,gix-features/zlib-stock,gix-features/rustsha1
